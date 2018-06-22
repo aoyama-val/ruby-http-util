@@ -20,10 +20,13 @@ class HttpUtil
 
     # str_url: URL（文字列）
     # data:    クエリパラメータ（ハッシュ）
+    # debug_port: デバッグ出力先（例：$stderr）
     # 戻り値: レスポンスオブジェクト。res.body, res.status, res.headers
-    def get(str_url, data=nil)
+    def get(str_url, data=nil, debug_port: nil)
       uri = URI.parse(str_url)
       http = Net::HTTP.new(uri.host, uri.port)
+
+      http.set_debug_output(debug_port) if debug_port
 
       if uri.scheme == "https"
         http.use_ssl = true
@@ -44,10 +47,13 @@ class HttpUtil
     # x-www-form-urlencodedでPOSTする
     # str_url: URL（文字列）
     # data:    ポストするデータ（ハッシュ）
+    # debug_port: デバッグ出力先（例：$stderr）
     # 戻り値: レスポンスオブジェクト。res.body, res.status, res.headers
-    def post(str_url, data, content_type: :form_urlencoded)
+    def post(str_url, data, content_type: :form_urlencoded, debug_port: nil)
       uri = URI.parse(str_url)
       http = Net::HTTP.new(uri.host, uri.port)
+
+      http.set_debug_output(debug_port) if debug_port
 
       if uri.scheme == "https"
         http.use_ssl = true
